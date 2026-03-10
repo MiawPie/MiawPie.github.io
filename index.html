@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MiawPie | Experimental Terminal v1.0</title>
+    <title>MiawPie | Experimental Terminal v2.0</title>
     <style>
         :root { --neon: #00ffff; --bg: #0d0d12; --font: 'Consolas', 'Courier New', monospace; --gold: #ffd700; }
         * { box-sizing: border-box; }
@@ -21,12 +21,10 @@
         .input-area { display: flex; align-items: center; margin-top: 15px; }
         #cmd { background: transparent; border: none; color: #fff; font-family: inherit; font-size: inherit; outline: none; flex: 1; padding: 5px; cursor: text; z-index: 10; }
         
-        /* WARNA-WARNI KODINGAN */
         .header { color: #888; text-transform: uppercase; letter-spacing: 1px; }
         .title { color: var(--gold); font-size: 1.2em; font-weight: bold; }
         .highlight { color: #00ff41; font-weight: bold; }
         
-        /* FIX LINK BISA DIPENCET DI HP */
         a { color: #ff00ff; text-decoration: underline; pointer-events: auto !important; position: relative; z-index: 9999; display: inline-block; cursor: pointer; }
         a:hover { color: #fff; text-decoration: none; }
         
@@ -36,11 +34,13 @@
 </head>
 <body>
 
+<audio id="bgm" src="https://files.catbox.moe/o3d81l.mp3" loop></audio>
+
 <div id="terminal">
     <div class="header">/* SYSTEM BOOTING... [OK] */</div>
     <br>
-    <div class="title">MIOWPIE EXPERIMENTAL OS v1.0</div>
-    <div>Welcome, <span class="highlight">Kentankxgorenk</span>. Type <span class="highlight">'help'</span> to see commands.</div>
+    <div class="title">MIOWPIE EXPERIMENTAL OS v2.0</div>
+    <div>Welcome, <span class="highlight">Kentankxgorenk</span>. Type <span class="highlight">'help'</span> for commands.</div>
     <br>
     <div id="output"></div>
     <div class="input-area">
@@ -52,22 +52,22 @@
 <script>
     const output = document.getElementById('output');
     const input = document.getElementById('cmd');
+    const audio = document.getElementById('bgm');
 
-    // KUMPULAN COMMAND FINAL KITA TADI
     const commands = {
-        'help': 'Commands: <span style="color:#ff00ff;">[about, ig, skill, secret, clear]</span>',
-        'about': 'Halo! Aku <span style="color:#00ffff;">Manzz</span>. Seorang <span class="highlight">Experimental Web Developer</span> yang lagi fokus ngulik hal-hal keren di HP. Suka logika (dari MTK Alef Survivor) & latihan fisik.',
+        'help': 'Commands: <span style="color:#ff00ff;">[about, ig, skill, play, stop, secret, clear]</span>',
+        'about': 'Halo! Aku <span style="color:#00ffff;">Manzz</span>. Seorang <span class="highlight">Experimental Web Developer</span> di HP. Suka logika (MTK Alef Survivor) & latihan fisik.',
         'skill': 'Pengalaman & Eksplorasi:<br>' +
-                 '- <span style="color:#00ffff;">Computational Logic</span> (Analisis problem solving di ajang MTK Alef)<br>' +
-                 '- <span style="color:#00ff41;">Experimental Workout</span> (Nyoba ngelatih badan & konsistenin beban 5kg+)<br>' +
-                 '- <span style="color:#ffa500;">Web Development</span> (Ngembangin antarmuka terminal interaktif)',
-        // FIX LINK IG SUPER MEWAH
-        'ig': 'Instagram: <a href="https://instagram.com/kentankxgorenk" target="_blank" style="color:#ff00ff; position:relative; z-index:9999; display:inline-block;">@kentankxgorenk</a>',
+                 '- <span style="color:#00ffff;">Computational Logic</span> (MTK Alef Survivor)<br>' +
+                 '- <span style="color:#00ff41;">Experimental Workout</span> (Beban 5kg+ On Progress)<br>' +
+                 '- <span style="color:#ffa500;">Web Development</span> (Terminal Interaktif)',
+        'ig': 'Instagram: <a href="https://instagram.com/kentankxgorenk" target="_blank">@kentankxgorenk</a>',
+        'play': '🎶 Memutar: <span style="color:#00ffff;">Wave to Earth - Love</span>. Enjoy the vibes...',
+        'stop': '🔇 Musik dihentikan.',
         'secret': 'Loading secret data... [OK] | Fact: Bata merah 5 biji ternyata lebih berat daripada harapan orang tua. :v',
-        'status': 'Status: <span class="blink">On Progress untuk jadi lebih konsisten...</span>'
+        'status': 'Status: <span class="blink">Lagi nyoba buat konsisten...</span>'
     };
 
-    // LOGIKA TERMINALNYA
     input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             const val = input.value.toLowerCase().trim();
@@ -77,6 +77,16 @@
 
             if (val === 'clear') {
                 output.innerHTML = '';
+            } else if (val === 'play') {
+                audio.play();
+                const res = document.createElement('div');
+                res.innerHTML = commands[val];
+                output.appendChild(res);
+            } else if (val === 'stop') {
+                audio.pause();
+                const res = document.createElement('div');
+                res.innerHTML = commands[val];
+                output.appendChild(res);
             } else if (commands[val]) {
                 const res = document.createElement('div');
                 res.innerHTML = commands[val];
@@ -88,14 +98,12 @@
             }
 
             input.value = '';
-            // Auto-scroll ke bawah
             window.scrollTo(0, document.body.scrollHeight);
         }
     });
 
-    // AUTO-FOCUS BUAT KEYBOARD DI HP (Trik Halus)
     document.addEventListener('touchstart', function(e) {
-        if(e.target.tagName !== 'A') { // Kalau klik link, keyboard jangan muncul
+        if(e.target.tagName !== 'A') {
             input.focus();
         }
     });
