@@ -3,27 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User@Portofolio:~</title>
+    <title>MiawPie | Experimental Terminal v1.0</title>
     <style>
-        :root { --neon: #00ffff; --bg: #0a0a0a; --font: 'Courier New', monospace; }
-        body { background: var(--bg); color: #fff; font-family: var(--font); margin: 0; padding: 20px; font-size: 14px; line-height: 1.5; }
-        #terminal { max-width: 800px; margin: auto; }
+        :root { --neon: #00ffff; --bg: #0d0d12; --font: 'Consolas', 'Courier New', monospace; --gold: #ffd700; }
+        * { box-sizing: border-box; }
+        body { 
+            background-color: var(--bg); 
+            color: #fff; 
+            font-family: var(--font); 
+            margin: 0; 
+            padding: 20px; 
+            font-size: 15px; 
+            overflow-x: hidden; 
+        }
+        #terminal { max-width: 900px; margin: 30px auto; padding: 20px; border: 1px solid #1a1a1a; border-radius: 8px; box-shadow: 0 4px 30px rgba(0,0,0,0.5); }
         .prompt { color: var(--neon); font-weight: bold; }
-        .input-area { display: flex; margin-top: 10px; }
-        input { background: transparent; border: none; color: #fff; font-family: inherit; font-size: inherit; outline: none; flex: 1; }
-        .blue { color: #569cd6; } .yellow { color: #dcdcaa; } .gray { color: #888; }
-        .cmd-list { color: var(--neon); font-style: italic; }
+        .input-area { display: flex; align-items: center; margin-top: 15px; }
+        #cmd { background: transparent; border: none; color: #fff; font-family: inherit; font-size: inherit; outline: none; flex: 1; padding: 5px; cursor: text; z-index: 10; }
+        
+        /* WARNA-WARNI KODINGAN */
+        .header { color: #888; text-transform: uppercase; letter-spacing: 1px; }
+        .title { color: var(--gold); font-size: 1.2em; font-weight: bold; }
+        .highlight { color: #00ff41; font-weight: bold; }
+        
+        /* FIX LINK BISA DIPENCET DI HP */
+        a { color: #ff00ff; text-decoration: underline; pointer-events: auto !important; position: relative; z-index: 9999; display: inline-block; cursor: pointer; }
+        a:hover { color: #fff; text-decoration: none; }
+        
+        @keyframes blink { 50% { opacity: 0; } }
+        .blink { animation: blink 1s linear infinite; }
     </style>
 </head>
-<body onclick="document.getElementById('cmd').focus()">
+<body>
 
 <div id="terminal">
-    <div class="gray">/* PORTFOLIO OPERATING SYSTEM v1.0 */</div>
-    <div class="blue">Welcome, Guest. Type <span class="yellow">'help'</span> to see available commands.</div>
+    <div class="header">/* SYSTEM BOOTING... [OK] */</div>
+    <br>
+    <div class="title">MIOWPIE EXPERIMENTAL OS v1.0</div>
+    <div>Welcome, <span class="highlight">Kentankxgorenk</span>. Type <span class="highlight">'help'</span> to see commands.</div>
     <br>
     <div id="output"></div>
     <div class="input-area">
-        <span class="prompt">guest@portfolio:~$ &nbsp;</span>
+        <span class="prompt">miawpie@terminal:~$&nbsp;</span>
         <input type="text" id="cmd" autofocus autocomplete="off">
     </div>
 </div>
@@ -32,24 +53,26 @@
     const output = document.getElementById('output');
     const input = document.getElementById('cmd');
 
-            const commands = {
-        'help': 'Perintah yang tersedia: <span style="color:#ff00ff;">[about, ig, skill, clear]</span>',
-        'about': 'Halo! Aku <span style="color:#00ffff;">Manzz</span>. Aku suka nyoba eksplor, dari koding sampai latihan fisik.',
-'skill': 'Pengalaman & Eksplorasi:<br>' +
-         '- <span style="color:#00ffff;">Computational Logic</span> (Analisis problem solving di ajang MTK Alef)<br>' +
-         '- <span style="color:#00ff41;">Experimental Workout</span> (Nyoba ngelatih badan)<br>' +
-         '- <span style="color:#ffa500;">Web Development</span> (Ngembangin antarmuka terminal interaktif)',
-'ig': 'Instagram: <a href="https://instagram.com/kentankxgorenk">@kentankxgorenk</a>',
-        'status': 'Status: <span class="blink">Lagi nyari tantangan baru yang minim risiko...</span>'
+    // KUMPULAN COMMAND FINAL KITA TADI
+    const commands = {
+        'help': 'Commands: <span style="color:#ff00ff;">[about, ig, skill, secret, clear]</span>',
+        'about': 'Halo! Aku <span style="color:#00ffff;">Manzz</span>. Seorang <span class="highlight">Experimental Web Developer</span> yang lagi fokus ngulik hal-hal keren di HP. Suka logika (dari MTK Alef Survivor) & latihan fisik.',
+        'skill': 'Pengalaman & Eksplorasi:<br>' +
+                 '- <span style="color:#00ffff;">Computational Logic</span> (Analisis problem solving di ajang MTK Alef)<br>' +
+                 '- <span style="color:#00ff41;">Experimental Workout</span> (Nyoba ngelatih badan & konsistenin beban 5kg+)<br>' +
+                 '- <span style="color:#ffa500;">Web Development</span> (Ngembangin antarmuka terminal interaktif)',
+        // FIX LINK IG SUPER MEWAH
+        'ig': 'Instagram: <a href="https://instagram.com/kentankxgorenk" target="_blank" style="color:#ff00ff; position:relative; z-index:9999; display:inline-block;">@kentankxgorenk</a>',
+        'secret': 'Loading secret data... [OK] | Fact: Bata merah 5 biji ternyata lebih berat daripada harapan orang tua. :v',
+        'status': 'Status: <span class="blink">On Progress untuk jadi lebih konsisten...</span>'
     };
 
-
-
+    // LOGIKA TERMINALNYA
     input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             const val = input.value.toLowerCase().trim();
             const line = document.createElement('div');
-            line.innerHTML = `<span class="prompt">guest@portfolio:~$</span> ${input.value}`;
+            line.innerHTML = `<span class="prompt">miawpie@terminal:~$&nbsp;</span>${input.value}`;
             output.appendChild(line);
 
             if (val === 'clear') {
@@ -65,7 +88,15 @@
             }
 
             input.value = '';
+            // Auto-scroll ke bawah
             window.scrollTo(0, document.body.scrollHeight);
+        }
+    });
+
+    // AUTO-FOCUS BUAT KEYBOARD DI HP (Trik Halus)
+    document.addEventListener('touchstart', function(e) {
+        if(e.target.tagName !== 'A') { // Kalau klik link, keyboard jangan muncul
+            input.focus();
         }
     });
 </script>
