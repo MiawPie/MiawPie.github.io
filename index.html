@@ -34,13 +34,13 @@
 </head>
 <body>
 
-<audio id="bgm" src="https://files.catbox.moe/o3d81l.mp3" loop></audio>
+<audio id="bgm" src="https://www.mboxdrive.com/lovewavetoearth.mp3" loop></audio>
 
 <div id="terminal">
     <div class="header">/* SYSTEM BOOTING... [OK] */</div>
     <br>
     <div class="title">MIOWPIE EXPERIMENTAL OS v2.0</div>
-    <div>Welcome, <span class="highlight">Kentankxgorenk</span>. Type <span class="highlight">'help'</span> for commands.</div>
+    <div>Welcome, <span class="highlight">Guest</span>. Type <span class="highlight">'help'</span> for commands.</div>
     <br>
     <div id="output"></div>
     <div class="input-area">
@@ -78,7 +78,12 @@
             if (val === 'clear') {
                 output.innerHTML = '';
             } else if (val === 'play') {
-                audio.play();
+                // Triks buat browser: play dapet trigger dari enter
+                audio.play().catch(error => {
+                    const err = document.createElement('div');
+                    err.innerHTML = `<span style="color:yellow">Klik layar dulu sekali, baru ketik play lagi ya!</span>`;
+                    output.appendChild(err);
+                });
                 const res = document.createElement('div');
                 res.innerHTML = commands[val];
                 output.appendChild(res);
