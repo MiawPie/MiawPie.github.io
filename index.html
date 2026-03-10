@@ -50,6 +50,39 @@
 </div>
 
 <script>
+        // 1. Fungsi pancingan audio (Taruh paling atas di dalam <script>)
+    let audioContextStarted = false;
+
+    function unlockAudio() {
+        if (!audioContextStarted) {
+            audio.play().then(() => {
+                audio.pause(); // Cuma buat mancing izin browser
+                audioContextStarted = true;
+            }).catch(e => console.log("Menunggu interaksi..."));
+        }
+    }
+
+    // 2. Setiap kali kamu sentuh layar, izin suara bakal kebuka
+    document.addEventListener('touchstart', unlockAudio);
+    document.addEventListener('click', unlockAudio);
+
+    // 3. Update bagian perintah PLAY
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const val = input.value.toLowerCase().trim();
+            // ... (kode prompt yang lama)
+
+            if (val === 'play') {
+                audio.currentTime = 0; // Mulai dari awal
+                audio.play(); 
+                const res = document.createElement('div');
+                res.innerHTML = "🎶 Memutar: <span style='color:#00ffff;'>Wave to Earth - Love</span>...";
+                output.appendChild(res);
+            }
+            // ... (kode stop, dll)
+        }
+    });
+    
     const output = document.getElementById('output');
     const input = document.getElementById('cmd');
     const audio = document.getElementById('bgm');
