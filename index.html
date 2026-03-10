@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User@Portofolio:~</title>
+    <style>
+        :root { --neon: #00ffff; --bg: #0a0a0a; --font: 'Courier New', monospace; }
+        body { background: var(--bg); color: #fff; font-family: var(--font); margin: 0; padding: 20px; font-size: 14px; line-height: 1.5; }
+        #terminal { max-width: 800px; margin: auto; }
+        .prompt { color: var(--neon); font-weight: bold; }
+        .input-area { display: flex; margin-top: 10px; }
+        input { background: transparent; border: none; color: #fff; font-family: inherit; font-size: inherit; outline: none; flex: 1; }
+        .blue { color: #569cd6; } .yellow { color: #dcdcaa; } .gray { color: #888; }
+        .cmd-list { color: var(--neon); font-style: italic; }
+    </style>
+</head>
+<body onclick="document.getElementById('cmd').focus()">
+
+<div id="terminal">
+    <div class="gray">/* PORTFOLIO OPERATING SYSTEM v1.0 */</div>
+    <div class="blue">Welcome, Guest. Type <span class="yellow">'help'</span> to see available commands.</div>
+    <br>
+    <div id="output"></div>
+    <div class="input-area">
+        <span class="prompt">guest@portfolio:~$ &nbsp;</span>
+        <input type="text" id="cmd" autofocus autocomplete="off">
+    </div>
+</div>
+
+<script>
+    const output = document.getElementById('output');
+    const input = document.getElementById('cmd');
+
+            const commands = {
+        'help': 'Perintah yang tersedia: <span style="color:#ff00ff;">[about, ig, skill, clear]</span>',
+        'about': 'Halo! Aku <span style="color:#00ffff;">Manzz</span>. Aku suka nyoba eksplor, dari koding sampai latihan fisik.',
+'skill': 'Pengalaman & Eksplorasi:<br>' +
+         '- <span style="color:#00ffff;">Computational Logic</span> (Analisis problem solving di ajang MTK Alef)<br>' +
+         '- <span style="color:#00ff41;">Experimental Workout</span> (Nyoba ngelatih badan)<br>' +
+         '- <span style="color:#ffa500;">Web Development</span> (Ngembangin antarmuka terminal interaktif)',
+        'ig': 'Instagram: <span style="color:#ff00ff; text-decoration:underline;">@username_kamu</span>',
+        'status': 'Status: <span class="blink">Lagi nyari tantangan baru yang minim risiko...</span>'
+    };
+
+
+
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const val = input.value.toLowerCase().trim();
+            const line = document.createElement('div');
+            line.innerHTML = `<span class="prompt">guest@portfolio:~$</span> ${input.value}`;
+            output.appendChild(line);
+
+            if (val === 'clear') {
+                output.innerHTML = '';
+            } else if (commands[val]) {
+                const res = document.createElement('div');
+                res.innerHTML = commands[val];
+                output.appendChild(res);
+            } else if (val !== "") {
+                const err = document.createElement('div');
+                err.innerHTML = `<span style="color:red">Command not found: ${val}</span>`;
+                output.appendChild(err);
+            }
+
+            input.value = '';
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+    });
+</script>
+</body>
+</html>
